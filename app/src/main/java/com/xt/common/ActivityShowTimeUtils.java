@@ -34,7 +34,7 @@ public class ActivityShowTimeUtils {
         mStartMillis = System.currentTimeMillis();
     }
 
-    public void startActivityDelayed(final Activity activity, final Class<MainActivity> cls) {
+    public void startActivityDelayed(final Activity activity, final Class<? extends Activity> cls) {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
