@@ -18,6 +18,8 @@ android {
         }
     }
 
+    //关于Static interface methods are only supported starting with Android N (--min-api 24)错误怎么修改
+    //因为静态接口需要在Java 8 下才支持使用，所以我们要使用静态接口，就需要在app的build.gradle文件中配置声明，使用Java 8编译。
     //开启Java1.8 能够使用lambda表达式
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -33,18 +35,28 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
-
-    api 'com.google.code.gson:gson:2.8.6'
-    api 'com.blankj:utilcode:1.26.0'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'androidx.coordinatorlayout:coordinatorlayout:1.1.0'
+
+    api 'com.google.code.gson:gson:2.8.6'
+
+    api 'com.blankj:utilcode:1.26.0'
+
 
     //RxJava和RxAndroid 用来做线程切换的
     api 'io.reactivex.rxjava2:rxandroid:2.1.0'
     api 'io.reactivex.rxjava2:rxjava:2.2.3'
 
     api 'com.squareup.okhttp3:okhttp:3.14.2'
+
     /****************张鸿洋okhttp的辅助类*******************/
     api 'com.zhy:okhttputils:2.6.2'
     /****************张鸿洋okhttp的辅助类*******************/
+
+    //引入ButterKnife
+    /*butterknife-compiler-8.8.1.jar' using Jetifier need to be updated manually to add support
+    'for androidx The given artifact contains a string literal with a package
+    'reference 'android.support.v4.content' that cannot be safely rewritten.*/
+    implementation "com.jakewharton:butterknife:10.0.0"
+    annotationProcessor "com.jakewharton:butterknife-compiler:10.0.0"
 }

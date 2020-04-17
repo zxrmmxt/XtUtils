@@ -76,7 +76,7 @@ public class MyThreadUtils {
      *
      * @param timerTask
      * @param delay
-     * @param period
+     * @param period    定时器间隔时间
      */
     public static void startTimerTask(TimerTask timerTask, long delay, long period) {
         new Timer().schedule(timerTask, delay, period);
@@ -134,24 +134,39 @@ public class MyThreadUtils {
     }
 
     public static class LimitTimesTimerTaskController {
+        /**
+         * 还剩下的执行次数
+         */
         private volatile int                                             mTimes;
+        /**
+         * 首次执行延时时间
+         */
         private          long                                            mDelay;
+        /**
+         * 定时器间隔时间
+         */
         private          long                                            mPeriod;
         private          LimitTimesTimerTask.LimitTimesTimerTaskCallback mLimitTimesTimerTaskCallback;
         private          LimitTimesTimerTask                             mLimitTimesTimerTask;
-
-        public LimitTimesTimerTaskController(int times, long delay, long period, LimitTimesTimerTask.LimitTimesTimerTaskCallback limitTimesTimerTaskCallback) {
-            mTimes = times;
-            mDelay = delay;
-            mPeriod = period;
-            mLimitTimesTimerTaskCallback = limitTimesTimerTaskCallback;
-        }
-
 
         public void startLimitTimesTimerTak() {
             cancelLimitTimesTimerTask();
             mLimitTimesTimerTask = new LimitTimesTimerTask(mTimes, mLimitTimesTimerTaskCallback);
             startTimerTask(mLimitTimesTimerTask, mDelay, mPeriod);
+        }
+
+        public void startLimitTimesTimerTak(int times, long delay, long period, LimitTimesTimerTask.LimitTimesTimerTaskCallback limitTimesTimerTaskCallback) {
+            {
+                mTimes = times;
+                mDelay = delay;
+                mPeriod = period;
+                mLimitTimesTimerTaskCallback = limitTimesTimerTaskCallback;
+            }
+            {
+                cancelLimitTimesTimerTask();
+                mLimitTimesTimerTask = new LimitTimesTimerTask(mTimes, mLimitTimesTimerTaskCallback);
+                startTimerTask(mLimitTimesTimerTask, mDelay, mPeriod);
+            }
         }
 
         public void cancelLimitTimesTimerTask() {
@@ -166,6 +181,10 @@ public class MyThreadUtils {
 
         public void setTimes(int times) {
             mTimes = times;
+        }
+
+        public int getTimes() {
+            return mTimes;
         }
     }
 }

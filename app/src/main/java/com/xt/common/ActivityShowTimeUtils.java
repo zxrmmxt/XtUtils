@@ -9,8 +9,8 @@ import android.os.Handler;
  * @author xt on 2020/4/14 15:15
  * 界面展示计时工具类
  */
-public class ActivityShowTimeUtils {
-    private static final int  STAY_MILLIS = 1000 * 2;
+public abstract class ActivityShowTimeUtils {
+    private static final int  STAY_MILLIS = 1000 * 0;
     private              long mStartMillis;
 
     public ActivityShowTimeUtils() {
@@ -28,19 +28,23 @@ public class ActivityShowTimeUtils {
     }
 
     /**
-     * 在{@link Activity#onCreate(Bundle)}中调用
+     * 在{@link android.app.Activity#onCreate(Bundle)}中调用
      */
     public void setStartMillis() {
         mStartMillis = System.currentTimeMillis();
     }
 
-    public void startActivityDelayed(final Activity activity, final Class<? extends Activity> cls) {
+    public void startActivityDelayed() {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                activity.startActivity(new Intent(activity, cls));
-                activity.finish();
+                onGo2next();
             }
         }, getStayMillis());
     }
+
+    /**
+     * 进入下一个界面
+     */
+    protected abstract void onGo2next();
 }

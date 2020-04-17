@@ -16,6 +16,8 @@ import com.xt.common.R;
 import com.xt.common.statusbar.ImmersiveStatusBarUtils;
 import com.xt.common.statusbar.StatusBarUtil;
 
+import butterknife.ButterKnife;
+
 /**
  * Created by Administrator on 2017/3/20.
  */
@@ -32,6 +34,9 @@ public abstract class BaseActivity extends AppCompatActivity {
             requestWindowFeature(Window.FEATURE_NO_TITLE);
         }
         setContentView(getLayoutResID());
+        {
+            ButterKnife.bind(this);
+        }
         {
             //设置沉浸式状态栏
             ImmersiveStatusBarUtils.setImmersiveStatus(getWindow());

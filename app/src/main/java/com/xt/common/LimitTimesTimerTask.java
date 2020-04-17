@@ -6,6 +6,9 @@ import java.util.TimerTask;
  * @author xt on 2019/6/12 14:36
  */
 public class LimitTimesTimerTask extends TimerTask {
+    /**
+     * 还剩下的执行次数
+     */
     private volatile int                         mTimes;
     private          LimitTimesTimerTaskCallback mLimitTimesTimerTaskCallback;
 
@@ -17,21 +20,21 @@ public class LimitTimesTimerTask extends TimerTask {
 
     @Override
     public void run() {
-        mTimes = mTimes - 1;
-        if (mTimes < 0) {
+        if (mTimes < 1) {
             cancel();
             if (mLimitTimesTimerTaskCallback != null) {
                 mLimitTimesTimerTaskCallback.onTimerTaskEnd();
             }
         } else {
             if (mLimitTimesTimerTaskCallback != null) {
-                mLimitTimesTimerTaskCallback.onDoTimerTask();
+                mLimitTimesTimerTaskCallback.onDoTimerTask(mTimes);
+                mTimes = mTimes - 1;
             }
         }
     }
 
     public interface LimitTimesTimerTaskCallback {
-        void onDoTimerTask();
+        void onDoTimerTask(int times);
 
         void onTimerTaskEnd();
     }

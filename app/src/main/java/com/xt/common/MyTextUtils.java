@@ -86,6 +86,7 @@ public class MyTextUtils {
 
     /**
      * 不区分大小写比较字符串(16进制字符串比较大小时会用到)
+     *
      * @param text1
      * @param text2
      * @return
@@ -98,5 +99,19 @@ public class MyTextUtils {
             text2 = text2.toUpperCase();
         }
         return TextUtils.equals(text1, text2);
+    }
+
+    /**
+     * 是否是手机号判断
+     * @param phoneNumber
+     * @return
+     */
+    public static boolean isPhoneNumber(String phoneNumber) {
+        if (TextUtils.isEmpty(phoneNumber)) {
+            return false;
+        } else {
+            String regex = "[1][34578]\\d{9}";
+            return phoneNumber.matches(regex);
+        }
     }
 }
