@@ -49,8 +49,9 @@ public class AppUpdateUtils {
     private static final String APK_DIR = Environment.getExternalStorageDirectory().getAbsolutePath();
 
     public static boolean hasUpdate() {
-        String appversion_android = "1.0";
-        return !TextUtils.isEmpty(appversion_android) && !TextUtils.equals(AppUtils.getAppVersionName(), appversion_android) && MyHttpUtils.isUrlAvaible(getAppUrl());
+        String androidPppVersion = "V1.0";
+        androidPppVersion = MyTextUtils.lastSubString(androidPppVersion, "V");
+        return !TextUtils.isEmpty(androidPppVersion) && !TextUtils.equals(AppUtils.getAppVersionName(), androidPppVersion) && MyHttpUtils.isUrlAvaible(getAppUrl());
     }
 
     /**
@@ -152,9 +153,12 @@ public class AppUpdateUtils {
         return (int) (max * percent);
     }
 
-    public static String getPercent(DownloadInfo downloadInfo) {
-        double percent = ((double) downloadInfo.getProgress()) / downloadInfo.getTotal();
+    public static String getPercentStr(double percent) {
         return String.format(Locale.getDefault(), "%d%s", ((int) (percent * 100d)), "%");
+    }
+
+    public static double getPercent(DownloadInfo downloadInfo) {
+        return ((double) downloadInfo.getProgress()) / downloadInfo.getTotal();
     }
 
     public static String getPercent100() {

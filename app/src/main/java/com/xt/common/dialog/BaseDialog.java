@@ -15,7 +15,10 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
+import com.xt.common.R;
 import com.xt.common.statusbar.ImmersiveStatusBarUtils;
+
+import butterknife.ButterKnife;
 
 
 /**
@@ -26,7 +29,8 @@ public abstract class BaseDialog extends Dialog {
     protected ConstraintLayout mRootView;
     protected View             mContentView;
 
-    private boolean mTouchCancelable = true;
+    private boolean              mTouchOutsideCancelable = true;
+    private View.OnClickListener mOnClickOutsideListener;
 
     public BaseDialog(@NonNull Context context) {
         super(context);
@@ -41,8 +45,13 @@ public abstract class BaseDialog extends Dialog {
     protected void init() {
         mRootView = (ConstraintLayout) LayoutInflater.from(getContext()).inflate(getContentLayoutRes(), new ConstraintLayout(getContext()), true);
         mContentView = mRootView.getChildAt(0);
-
         setContentView(mRootView);
+        {
+            setMaskColor(R.color.colorBlack9913131A);
+        }
+        {
+            ButterKnife.bind(this, mRootView);
+        }
 
         {
             final Window dialogWindow = getWindow();
@@ -72,8 +81,11 @@ public abstract class BaseDialog extends Dialog {
             mRootView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (mTouchCancelable) {
+                    if (mTouchOutsideCancelable) {
                         dismiss();
+                    }
+                    if (mOnClickOutsideListener != null) {
+                        mOnClickOutsideListener.onClick(view);
                     }
                 }
             });
@@ -100,19 +112,32 @@ public abstract class BaseDialog extends Dialog {
      * 设置遮罩颜色
      * 只有FrameLayout可以设置前景
      *
-     * @param resid
+     * @param resId
      */
-    public void setForegroundResid(int resid) {
+    private void setForegroundResId(int resId) {
         if (getWindow() != null) {
             View decorView = getWindow().getDecorView();
             if (decorView instanceof FrameLayout) {
-                ((FrameLayout) decorView).setForeground(ContextCompat.getDrawable(getContext(), resid));
+                ((FrameLayout) decorView).setForeground(ContextCompat.getDrawable(getContext(), resId));
             }
         }
     }
 
-    public void setTouchCancelable(boolean touchCancelable) {
-        mTouchCancelable = touchCancelable;
+    /**
+     * 设置遮罩颜色
+     *
+     * @param colorRes
+     */
+    private void setMaskColor(int colorRes) {
+        mRootView.setBackgroundResource(colorRes);
+    }
+
+    public void setTouchOutsideCancelable(boolean touchOutsideCancelable) {
+        mTouchOutsideCancelable = touchOutsideCancelable;
+    }
+
+    public void setOnClickOutsideListener(View.OnClickListener onClickOutsideListener) {
+        mOnClickOutsideListener = onClickOutsideListener;
     }
 
     /*************点击空白地方，输入法隐藏******************/
